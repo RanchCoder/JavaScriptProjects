@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #fact {
+            display: none;
+        }
+    </style>
+    <title>Number Facts | fact check app</title>
+</head>
+
+<body class="bg-dark">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card bg-primary text-white mt-5 p-4">
+                    <h1>Number Facts</h1>
+                    <p>Enter a number and get a random fact</p>
+                    <input type="number" class="form-control form-control-lg" id="numberInput"
+                        placeholder="Enter any number...">
+                    <div id="fact" class="card-body">
+                        <h4 class="card-title">
+                            Number Fact
+                        </h4>
+                        <p id="factText" class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card bg-success text-white mt-5 mb-5 p-4">
+                    <h1>Year Facts</h1>
+                    <p>Enter a year and get a random fact</p>
+                    <input type="number" name="" id="month" class="form-control form-control-lg mb-2"
+                        placeholder="enter month...">
+                    <input type="number" name="" id="day" class="form-control form-control-lg mb-2"
+                        placeholder="enter day...">
+
+                    <div id="fact1" class="card-body">
+                        <h4 class="card-title">
+                            Date Fact
+                        </h4>
+
+                        <p id="factText1" class="card-text">
+
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let fact = document.querySelector('#fact');
+        let factText = document.querySelector('#factText');
+
+        let numberInput = document.querySelector('#numberInput');
+        numberInput.addEventListener('input', getFactFetch);
+
+        // function getFactAjax(){
+        //     let number = numberInput.value;
+        //     //console.log(number);
+
+        //     let xhr = new XMLHttpRequest();
+        //     xhr.open('GET','http://numbersapi.com/'+number);
+        //     xhr.onload = function(){
+
+        //         if(xhr.status == 200 && number != ''){
+        //             fact.style.display = 'block';
+        //             factText.innerText = xhr.responseText;
+
+        //         }
+
+        //     }
+
+        //     xhr.send();
+
+
+        // }
+
+        function getFactFetch() {
+
+            let number = numberInput.value;
+            fetch('http://numbersapi.com/' + number)
+                .then(response => response.text())
+                .then(data => {
+                    if (number != '') {
+                        fact.style.display = 'block';
+                        factText.innerText = data;
+
+                    }
+
+
+                }).catch(err => console.log(err));
+        }
+
+
+        let fact2 = document.querySelector('#fact1');
+        let factText2 = document.querySelector('#factText1');
+
+        let month = document.querySelector('#month');
+
+        let day = document.querySelector('#day');
+        day.addEventListener('input', yearInput);
+        month.addEventListener('input', monthInput);
+
+        function yearInput() {
+
+           
+
+                
+
+            
+            if (month.value > 12 || month.value  < 0 || day.value > 31 || day.value < 0) {
+                alert('please provide correct month and day input');
+                month.value = '';
+                day.value = '';
+                fact.style.display = 'none';
+                return false;
+
+            } else {
+
+                if (month.value == '' || day.value == '') {
+                    alert('please fill the month field to get an intresting fact');
+                } else {
+                    fetch('http://numbersapi.com/' + month.value + '/' + day.value + '/date')
+                        .then(response => response.text())
+                        .then(data => {
+                            if (month.value != '' && day.value != '') {
+                                console.log(data);
+                                fact2.style.display = 'block';
+                                factText2.innerText = data;
+                            }
+                        }).catch(err => console.log(err));
+                }
+
+            }
+
+
+        }
+
+        function monthInput() {
+
+       
+
+                
+
+            
+
+            if (month.value > 12 || month.value  < 0 || day.value > 31 || day.value < 0) {
+                alert('please provide correct month and day input');
+                month.value = '';
+                day.value = '';
+                fact2.style.display = 'none';
+                return false;
+            } else {
+
+
+                fetch('http://numbersapi.com/' + month.value + '/' + day.value + '/date')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (month.value != '' && day.value != '') {
+                            console.log(data);
+                            fact2.style.display = 'block';
+                            factText2.innerText = data;
+                        }
+                    }).catch(err => console.log(err));
+
+
+            }
+
+
+        }
+
+    </script>
+</body>
+
+</html>
